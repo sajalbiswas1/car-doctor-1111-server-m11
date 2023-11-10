@@ -62,7 +62,16 @@ async function run() {
         const bookingCollection = client.db("carDoctor").collection("bookings")
 
         app.get('/services', async (req, res) => {
-            const cursor = servicesCollection.find();
+            const filter = req.query;
+            const query = {};
+            console.log(filter)
+            const option = {
+                sort: {
+                    price: filter.sort === "asc" ? 1 : -1    
+                }
+            }
+            console.log(query)
+            const cursor = servicesCollection.find(query,option);
             const result = await cursor.toArray();
             res.send(result);
         })
